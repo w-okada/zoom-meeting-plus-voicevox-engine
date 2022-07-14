@@ -463,3 +463,24 @@ python -c "import pyopenjtalk; pyopenjtalk.create_user_dict('default.csv','user.
 
 LGPL v3 と、ソースコードの公開が不要な別ライセンスのデュアルライセンスです。
 別ライセンスを取得したい場合は、ヒホ（twitter: @hiho_karuta）に求めてください。
+
+
+
+
+# メモ
+```
+$ docker builder prune
+$ docker buildx build . -t voicevox/voicevox_engine:cpu-ubuntu20.04-latest --target runtime-env --progress plain --build-arg BASE_IMAGE=ubuntu:focal --build-arg BASE_RUNTIME_IMAGE=ubuntu:focal --build-arg ONNXRUNTIME_URL=https://github.com/microsoft/onnxruntime/releases/download/v1.10.0/onnxruntime-linux-x64-1.10.0.tgz --build-arg VOICEVOX_CORE_LIBRARY_NAME=libcore_cpu_x64.so
+
+$ heroku login
+$ heroku create zoom-meeting-plus-voicevox # omit "-engine" as limit of name in heroku
+$ docker tag voicevox/voicevox_engine:cpu-ubuntu20.04-latest registry.heroku.com/zoom-meeting-plus-voicevox/web
+$ heroku container:login
+$ docker push registry.heroku.com/zoom-meeting-plus-voicevox/web
+$ heroku container:release web
+```
+
+↓で取れるか確認
+https://zoom-meeting-plus-voicevox.herokuapp.com/speakers
+
+$ heroku logs --tail

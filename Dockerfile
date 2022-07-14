@@ -187,8 +187,8 @@ RUN <<EOF
     # Install requirements
     # FIXME: Nuitka cannot build with setuptools>=60.7.0
     # https://github.com/Nuitka/Nuitka/issues/1406
-    gosu user /opt/python/bin/python3 -m pip install --upgrade pip setuptools==60.6.0 wheel
-    gosu user /opt/python/bin/pip3 install -r /tmp/requirements.txt
+    /opt/python/bin/python3 -m pip install --upgrade pip setuptools==60.6.0 wheel
+    /opt/python/bin/pip3 install -r /tmp/requirements.txt
 EOF
 
 # Copy VOICEVOX Core release
@@ -234,7 +234,7 @@ RUN <<EOF
     # try 5 times, sleep 5 seconds before retry
     for i in $(seq 5); do
         EXIT_CODE=0
-        gosu user /opt/python/bin/python3 -c "import pyopenjtalk; pyopenjtalk._lazy_init()" || EXIT_CODE=$?
+        /opt/python/bin/python3 -c "import pyopenjtalk; pyopenjtalk._lazy_init()" || EXIT_CODE=$?
         if [ "$EXIT_CODE" = "0" ]; then
             break
         fi
@@ -267,7 +267,7 @@ exec "\$@"
 EOF
 
 ENTRYPOINT [ "/entrypoint.sh"  ]
-CMD [ "gosu", "user", "/opt/python/bin/python3", "./run.py", "--voicelib_dir", "/opt/voicevox_core/", "--runtime_dir", "/opt/onnxruntime/lib", "--host", "0.0.0.0" ]
+CMD [ "/opt/python/bin/python3", "./run.py", "--voicelib_dir", "/opt/voicevox_core/", "--runtime_dir", "/opt/onnxruntime/lib", "--host", "0.0.0.0" ]
 
 # Enable use_gpu
 FROM runtime-env AS runtime-nvidia-env

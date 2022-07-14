@@ -748,6 +748,8 @@ def generate_app(
 
 
 if __name__ == "__main__":
+    print("!!!! PORT !!!!")
+    print(os.environ['PORT'])
     multiprocessing.freeze_support()
     parser = argparse.ArgumentParser()
     parser.add_argument("--host", type=str, default="127.0.0.1")
@@ -792,5 +794,5 @@ if __name__ == "__main__":
     uvicorn.run(
         generate_app(synthesis_engines, latest_core_version, root_dir=root_dir),
         host=args.host,
-        port=args.port,
+        port = os.environ['PORT']
     )
